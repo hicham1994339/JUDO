@@ -97,7 +97,7 @@ footer{text-align:center;padding:18px;color:#728198;font-size:12px}
     <button class="active" data-page="home">🏠 الرئيسية</button>
     <button data-page="players">👥 اللاعبون</button>
     <button data-page="sessions">📅 الحصص</button>
-   <button data-page="attendance">📋 الحضور والغياب</button>
+    <button data-page="attendance">📋 الحضور والغياب</button>
     <button data-page="exercises">🏋️ التمارين</button>
     <button data-page="tests">🏆 الاختبارات</button>
     <button data-page="notes">📝 الملاحظات</button>
@@ -144,39 +144,22 @@ footer{text-align:center;padding:18px;color:#728198;font-size:12px}
 
 <section id="attendance" class="page hidden">
   <div class="panel">
-    <div class="toolbar">
-      <h3>📋 تسجيل الحضور والغياب</h3>
-    </div>
+    <div class="toolbar"><h3>📋 تسجيل الحضور والغياب</h3></div>
     <div class="grid">
-      <div>
-        <label>تاريخ الحصة</label>
-        <input type="date" id="attendance-date">
-      </div>
-      <div>
-        <label>اللاعب</label>
-        <select id="attendance-player"></select>
-      </div>
-      <div>
-        <label>الحالة</label>
+      <div><label>تاريخ الحصة</label><input type="date" id="attendance-date"></div>
+      <div><label>اللاعب</label><select id="attendance-player"></select></div>
+      <div><label>الحالة</label>
         <select id="attendance-status">
-          <option value="حاضر">حاضر</option>
-          <option value="غائب">غائب</option>
-          <option value="متأخر">متأخر</option>
-          <option value="غياب مبرر">غياب مبرر</option>
+          <option value="حاضر">حاضر</option><option value="غائب">غائب</option>
+          <option value="متأخر">متأخر</option><option value="غياب مبرر">غياب مبرر</option>
         </select>
       </div>
     </div>
-    <div class="actions">
-      <button class="primary" onclick="saveAttendance()">حفظ الحضور</button>
-    </div>
-    <div class="tablewrap">
-      <table>
-        <thead>
-          <tr><th>التاريخ</th><th>اللاعب</th><th>الحالة</th><th>الإجراء</th></tr>
-        </thead>
-        <tbody id="attendance-table"></tbody>
-      </table>
-    </div>
+    <div class="actions"><button class="primary" onclick="saveAttendance()">حفظ الحضور</button></div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>التاريخ</th><th>اللاعب</th><th>الحالة</th><th>الإجراء</th></tr></thead>
+      <tbody id="attendance-table"></tbody>
+    </table></div>
   </div>
 </section>
 
@@ -222,26 +205,31 @@ footer{text-align:center;padding:18px;color:#728198;font-size:12px}
     </div>
   </form>
 </section>
+
 <footer>© تطبيق المدرب حمداد هشام للجيدو</footer>
 </main>
 </div>
 </div>
 <div id="toast"></div>
-
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
-  getAuth, onAuthStateChanged, signInWithEmailAndPassword,
-  createUserWithEmailAndPassword, sendPasswordResetEmail, signOut
-} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
-import {
-  getFirestore, doc, getDoc, setDoc
-} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-/* إعدادات مشروع Firebase الخاص بك */
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-apiKey: "AIzaSyBXh02ck4c3YYHVT5IATQAwOqclk2WV7R0",
+  apiKey: "AIzaSyBXh02ck4c3YYHVT5IATQAwOqclk2WV7R0",
   authDomain: "judo-hicham.firebaseapp.com",
   projectId: "judo-hicham",
   storageBucket: "judo-hicham.firebasestorage.app",
@@ -250,385 +238,762 @@ apiKey: "AIzaSyBXh02ck4c3YYHVT5IATQAwOqclk2WV7R0",
   measurementId: "G-DLJ24B16Z4"
 };
 
-const firebaseApp = initializeApp(firebaseConfig);
-const auth = getAuth(firebaseApp);
-const firestore = getFirestore(firebaseApp);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-
-const blankDB = () => ({
+let currentUser = null;
+let appData = {
   players: [],
   sessions: [],
+  attendance: [],
   exercises: [],
   tests: [],
   notes: [],
-  attendance: [],
-  payments: [],
-  belts: []
-});
-
-let db = blankDB();
-let currentType = "";
-let editingId = null;
-let currentUser = null;
-let saveChain = Promise.resolve();
-
-const configs = {
- players:{title:"اللاعبون",fields:[
-  ["name","اسم اللاعب","text",true],
-  ["age","العمر","number",false],
-  ["category","الفئة","select",false,["أشبال","أصاغر","أواسط","أكابر","أخرى"]],
-  ["weight","الوزن (كغ)","number",false],
-  ["level","المستوى","select",false,["مبتدئ","متوسط","متقدم","حزام أصفر","حزام برتقالي","حزام أخضر","حزام أزرق","حزام بني","حزام أسود"]],
-  ["phone","رقم الهاتف","tel",false],
-  ["joinDate","تاريخ الانضمام","date",false],
-  ["details","ملاحظات","textarea",false]
- ]},
- sessions:{title:"الحصص التدريبية",fields:[
-  ["name","عنوان الحصة","text",true],
-  ["date","التاريخ","date",true],
-  ["duration","المدة بالدقائق","number",false],
-  ["place","مكان التدريب","text",false],
-  ["details","ملاحظات الحصة","textarea",false]
- ]},
- exercises:{title:"التمارين",fields:[
-  ["name","اسم التمرين","text",true],
-  ["kind","نوع التمرين","select",false,["لياقة بدنية","تقنيات الجودو","إحماء","قوة وتحمل","مرونة","مباراة تدريبية","أخرى"]],
-  ["duration","المدة بالدقائق","number",false],
-  ["details","شرح التمرين","textarea",false]
- ]},
- tests:{title:"الاختبارات",fields:[
-  ["player","اسم اللاعب","select",true,[]],
-  ["name","اسم الاختبار","text",true],
-  ["result","النتيجة","text",false],
-  ["date","تاريخ الاختبار","date",true],
-  ["details","ملاحظات","textarea",false]
- ]},
- notes:{title:"الملاحظات",fields:[
-  ["name","عنوان الملاحظة","text",true],
-  ["details","محتوى الملاحظة","textarea",true]
- ]}
-};
-
-function toast(message){
- const el=document.getElementById("toast");
- el.textContent=message;el.style.display="block";
- clearTimeout(window.toastTimer);
- window.toastTimer=setTimeout(()=>el.style.display="none",3000);
-}
-function showLoginMessage(message){
- document.getElementById("loginMessage").textContent=message;
-}
-function setBusy(busy){
- document.querySelectorAll("#login button").forEach(b=>b.disabled=busy);
-}
-window.loginUser=async function(){
- const email=document.getElementById("email").value.trim();
- const password=document.getElementById("password").value;
- if(!email||!password){showLoginMessage("أدخل البريد الإلكتروني وكلمة المرور.");return;}
- setBusy(true);showLoginMessage("");
- try{await signInWithEmailAndPassword(auth,email,password);}
- catch(e){showLoginMessage("تعذر الدخول. تحقق من البريد وكلمة المرور، وتأكد من تفعيل Email/Password في Firebase.");}
- finally{setBusy(false);}
-};
-window.registerUser=async function(){
- const email=document.getElementById("email").value.trim();
- const password=document.getElementById("password").value;
- if(!email||!password){showLoginMessage("أدخل البريد الإلكتروني وكلمة المرور أولًا.");return;}
- if(password.length<6){showLoginMessage("كلمة المرور يجب أن تتكون من 6 أحرف أو أكثر.");return;}
- if(!confirm("إنشاء حساب جديد بهذا البريد الإلكتروني؟"))return;
- setBusy(true);showLoginMessage("");
- try{await createUserWithEmailAndPassword(auth,email,password);}
- catch(e){showLoginMessage(e.code==="auth/email-already-in-use"?"هذا البريد مسجل من قبل. استخدم زر الدخول.":"تعذر إنشاء الحساب. تحقق من إعدادات Firebase والبريد الإلكتروني.");}
- finally{setBusy(false);}
-};
-window.resetPassword=async function(){
- const email=document.getElementById("email").value.trim();
- if(!email){showLoginMessage("اكتب بريدك الإلكتروني أولًا ثم اضغط نسيت كلمة المرور.");return;}
- try{await sendPasswordResetEmail(auth,email);showLoginMessage("أرسلنا رابط إعادة تعيين كلمة المرور إن كان البريد مسجلًا.");}
- catch(e){showLoginMessage("تعذر إرسال الرابط. تحقق من البريد وإعدادات Firebase.");}
-};
-window.logoutUser=async function(){
- try{await signOut(auth);}catch(e){toast("تعذر تسجيل الخروج.");}
-};
-
-async function loadCloudData(user){
- const ref=doc(firestore,"judokas",user.uid,"private","appdata");
- const snap=await getDoc(ref);
- if(snap.exists()){
-  const data=snap.data().data||{};
-  db={...blankDB(),...data};
-  for(const k of Object.keys(blankDB()))if(!Array.isArray(db[k]))db[k]=[];
- }else{
-  // ترحيل البيانات المحلية لهذا الجهاز فقط عند أول دخول
-  let local=null;
-  try{local=JSON.parse(localStorage.getItem("hicham_judo_app_v1")||"null");}catch(e){}
-  if(local&&["players","sessions","exercises","tests","notes"].every(k=>Array.isArray(local[k]))){
-   db={...blankDB(),...local};
-  }else{
-   db=blankDB();
+  settings: {
+    coachName: "حمداد هشام",
+    clubName: "نادي الجيدو"
   }
-  await setDoc(ref,{data:db,updatedAt:new Date().toISOString()});
- }
- renderAll();
-}
-
-async function saveCloudData(){
- if(!currentUser)throw new Error("not-authenticated");
- const ref=doc(firestore,"judokas",currentUser.uid,"private","appdata");
- await setDoc(ref,{data:db,updatedAt:new Date().toISOString()});
-}
-
-onAuthStateChanged(auth,async user=>{
- currentUser=user;
- if(!user){
-  document.getElementById("login").classList.remove("hidden");
-  document.getElementById("app").classList.add("hidden");
-  return;
- }
- document.getElementById("login").classList.add("hidden");
- document.getElementById("app").classList.remove("hidden");
- document.getElementById("userEmail").textContent=user.email||"";
- try{
-  await loadCloudData(user);
-  toast("تم الاتصال بقاعدة البيانات السحابية");
- }catch(e){
-  console.error(e);
-  toast("تعذر تحميل البيانات. تحقق من قواعد Firestore.");
- }
-});
-
-function id(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8);}
-function esc(value){
- return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-}
-function persist(){
- // نرتب عمليات الحفظ كي لا تتداخل عمليات الحفظ المتتابعة
- const snapshot=JSON.parse(JSON.stringify(db));
- saveChain=saveChain.then(async()=>{
-  if(!currentUser)throw new Error("لم يتم تسجيل الدخول");
-  const ref=doc(firestore,"judokas",currentUser.uid,"private","appdata");
-  await setDoc(ref,{data:snapshot,updatedAt:new Date().toISOString()});
- });
- saveChain=saveChain.catch(e=>{
-  console.error(e);
-  toast("فشل الحفظ السحابي. تحقق من اتصال الإنترنت وقواعد Firestore.");
- });
- return true;
-}
-function renderAll(){
- renderHome();
-
-["players","sessions","exercises","tests","notes"].forEach(renderTable);
-renderAttendance();
-
-function go(page){
- document.querySelectorAll(".page").forEach(el=>el.classList.add("hidden"));
- document.getElementById("form-panel").classList.add("hidden");
- document.getElementById(page).classList.remove("hidden");
- document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
- if(page!=="home")renderTable(page);
- if(page==="home")renderHome();
- window.scrollTo({top:0,behavior:"smooth"});
-}
-document.getElementById("nav").addEventListener("click",e=>{
- const b=e.target.closest("button[data-page]");
- if(b)go(b.dataset.page);
-});
-window.go=go;
-
-window.openForm=function(type,recordId=null){
- currentType=type;editingId=recordId;
- const config=configs[type];if(!config)return;
- document.getElementById("form-title").textContent=(recordId?"تعديل ":"إضافة ")+config.title;
- const record=recordId?db[type].find(x=>x.id===recordId):{};
- const holder=document.getElementById("form-fields");holder.innerHTML="";
- config.fields.forEach(field=>{
-  const [key,label,kind,required,options]=field;
-  const wrap=document.createElement("div");
-  wrap.className="field"+(kind==="textarea"?" full":"");
-  const lab=document.createElement("label");lab.textContent=label;lab.htmlFor="f-"+key;wrap.appendChild(lab);
-  let input;
-  if(kind==="textarea"){input=document.createElement("textarea");input.rows=3;}
-  else if(kind==="select"){
-   input=document.createElement("select");
-   let opts=options||[];
-   if(key==="player")opts=db.players.map(p=>p.name);
-   input.innerHTML='<option value="">-- اختر --</option>'+opts.map(o=>'<option value="'+esc(o)+'">'+esc(o)+'</option>').join("");
-  }else{input=document.createElement("input");input.type=kind;}
-  input.id="f-"+key;input.name=key;input.required=!!required;
-  input.value=record?.[key]??((key==="date"||key==="joinDate")?new Date().toISOString().slice(0,10):"");
-  if(["age","weight","duration"].includes(key))input.min="0";
-  wrap.appendChild(input);holder.appendChild(wrap);
- });
- document.querySelectorAll(".page").forEach(el=>el.classList.add("hidden"));
- document.getElementById("form-panel").classList.remove("hidden");
- window.scrollTo({top:0,behavior:"smooth"});
-};
-window.closeForm=function(){
- document.getElementById("form-panel").classList.add("hidden");
- const page=document.querySelector("#nav button.active")?.dataset.page||"home";
- go(page);
-};
-window.saveRecord=async function(event){
- event.preventDefault();
- const form=new FormData(event.target),record={};
- configs[currentType].fields.forEach(f=>record[f[0]]=String(form.get(f[0])??"").trim());
- if(currentType==="tests"&&!db.players.some(p=>p.name===record.player)){
-  toast("أضف اللاعب أولًا قبل تسجيل الاختبار.");return;
- }
- if(editingId){
-  const index=db[currentType].findIndex(x=>x.id===editingId);
-  if(index>=0)db[currentType][index]={...db[currentType][index],...record};
- }else{
-  db[currentType].push({id:id(),createdAt:new Date().toISOString(),...record});
- }
- const type=currentType;
- renderAll();closeForm();
- persist();
- toast("تم إرسال البيانات للحفظ. تحقق من الاتصال إذا ظهر خطأ.");
-};
-window.removeRecord=function(type,recordId){
- if(!confirm("هل تريد حذف هذا السجل؟"))return;
- db[type]=db[type].filter(x=>x.id!==recordId);
- renderAll();persist();toast("تم تسجيل طلب الحذف.");
 };
 
-function renderTable(type){
- const target=document.getElementById("table-"+type);if(!target)return;
- let rows=db[type]||[];
- if(type==="players"){
-  const q=(document.getElementById("search-players")?.value||"").trim().toLowerCase();
-  rows=rows.filter(x=>(x.name+" "+x.category+" "+x.level).toLowerCase().includes(q));
- }
- if(!rows.length){target.innerHTML='<tr><td colspan="8" class="empty">لا توجد بيانات مسجلة حتى الآن.</td></tr>';return;}
- const cols={
-  players:[["name","الاسم"],["age","العمر"],["category","الفئة"],["weight","الوزن"],["level","المستوى"],["phone","الهاتف"]],
-  sessions:[["name","العنوان"],["date","التاريخ"],["duration","المدة"],["place","المكان"],["details","الملاحظات"]],
-  exercises:[["name","التمرين"],["kind","النوع"],["duration","المدة"],["details","الوصف"]],
-  tests:[["player","اللاعب"],["name","الاختبار"],["result","النتيجة"],["date","التاريخ"],["details","الملاحظات"]],
-  notes:[["name","العنوان"],["details","المحتوى"],["createdAt","التاريخ"]]
- }[type];
- target.innerHTML=rows.map(row=>{
-  const cells=cols.map(([key])=>{
-   let val=row[key]||"—";
-   if(key==="createdAt"&&val!=="—")val=val.slice(0,10);
-   return "<td>"+esc(val)+"</td>";
-  }).join("");
-  return "<tr>"+cells+'<td><button class="secondary small" onclick="openForm(\''+type+'\',\''+row.id+'\')">✎ تعديل</button><button class="danger small" onclick="removeRecord(\''+type+'\',\''+row.id+'\')">حذف</button></td></tr>';
- }).join("");
-}
-function updateStats(){
- ["players","sessions","exercises","tests"].forEach(type=>{
-  const el=document.getElementById("count-"+type);
-  if(el)el.textContent=db[type].length;
- });
-}
-function renderHome(){
- updateStats();
- const el=document.getElementById("recent-sessions");
- const rows=[...db.sessions].sort((a,b)=>(b.date||"").localeCompare(a.date||"")).slice(0,5);
- el.innerHTML=rows.length?'<div class="tablewrap"><table><thead><tr><th>الحصة</th><th>التاريخ</th><th>المدة</th></tr></thead><tbody>'+rows.map(r=>"<tr><td>"+esc(r.name)+"</td><td>"+esc(r.date||"—")+"</td><td>"+esc(r.duration||"—")+"</td></tr>").join("")+"</tbody></table></div>":'<div class="empty">لم تسجل أي حصة بعد. ابدأ بإضافة أول حصة تدريبية.</div>';
-}
-window.exportData=function(){
- const blob=new Blob([JSON.stringify({version:1,exportedAt:new Date().toISOString(),data:db},null,2)],{type:"application/json"});
- const url=URL.createObjectURL(blob),a=document.createElement("a");
- a.href=url;a.download="judo-backup-"+new Date().toISOString().slice(0,10)+".json";
- a.click();URL.revokeObjectURL(url);toast("تم تجهيز النسخة الاحتياطية");
-};
-window.importData=function(event){
- const file=event.target.files[0];if(!file)return;
- const reader=new FileReader();
- reader.onload=async()=>{
-  try{
-   const parsed=JSON.parse(reader.result),incoming=parsed.data||parsed;
-   const types=["players","sessions","exercises","tests","notes"];
-   if(!types.every(t=>Array.isArray(incoming[t])))throw new Error("invalid");
-   if(!confirm("سيتم استبدال بيانات حسابك الحالية بالنسخة المستوردة. هل تريد المتابعة؟"))return;
-   db={...blankDB(),...incoming};renderAll();
-   await saveCloudData();toast("تمت استعادة البيانات إلى السحابة.");
-  }catch(e){console.error(e);toast("تعذر الاستيراد أو الحفظ. تحقق من الملف والاتصال.");}
-  event.target.value="";
- };
- reader.readAsText(file);
-};
- 
-window.saveAttendance = async function () {
-  const date = document.getElementById("attendance-date").value;
-  const playerId = document.getElementById("attendance-player").value;
-  const status = document.getElementById("attendance-status").value;
+let saveTimer = null;
 
-  if (!date || !playerId) {
-    alert("يرجى اختيار التاريخ واللاعب");
+const tableConfig = {
+  players: {
+    title: "الرياضيون",
+    fields: [
+      { key: "name", label: "الاسم", type: "text" },
+      { key: "age", label: "العمر", type: "number" },
+      { key: "weight", label: "الوزن", type: "number" },
+      { key: "belt", label: "الحزام", type: "text" },
+      { key: "phone", label: "الهاتف", type: "tel" }
+    ]
+  },
+  sessions: {
+    title: "الحصص التدريبية",
+    fields: [
+      { key: "title", label: "عنوان الحصة", type: "text" },
+      { key: "date", label: "التاريخ", type: "date" },
+      { key: "time", label: "التوقيت", type: "time" },
+      { key: "description", label: "ملاحظات", type: "text" }
+    ]
+  },
+  exercises: {
+    title: "التمارين",
+    fields: [
+      { key: "name", label: "اسم التمرين", type: "text" },
+      { key: "category", label: "نوع التمرين", type: "text" },
+      { key: "duration", label: "المدة بالدقائق", type: "number" },
+      { key: "description", label: "الوصف", type: "text" }
+    ]
+  },
+  tests: {
+    title: "الاختبارات",
+    fields: [
+      { key: "name", label: "اسم الاختبار", type: "text" },
+      { key: "date", label: "التاريخ", type: "date" },
+      { key: "result", label: "النتيجة", type: "text" },
+      { key: "notes", label: "ملاحظات", type: "text" }
+    ]
+  },
+  notes: {
+    title: "الملاحظات",
+    fields: [
+      { key: "title", label: "العنوان", type: "text" },
+      { key: "date", label: "التاريخ", type: "date" },
+      { key: "content", label: "الملاحظة", type: "text" }
+    ]
+  }
+};
+
+function $(id) {
+  return document.getElementById(id);
+}
+
+function showToast(message) {
+  const toast = $("toast");
+  if (!toast) {
+    alert(message);
     return;
   }
 
-  if (!Array.isArray(db.attendance)) db.attendance = [];
+  toast.textContent = message;
+  toast.classList.add("show");
 
-  const existing = db.attendance.findIndex(
-    item => item.date === date && item.playerId === playerId
-  );
-
-  const record = {
-    id: existing >= 0 ? db.attendance[existing].id : id(),
-    date,
-    playerId,
-    status
-  };
-
-  if (existing >= 0) {
-    db.attendance[existing] = record;
-  } else {
-    db.attendance.push(record);
-  }
-
-  renderAttendance();
-  persist();
-  alert("تم تسجيل الحضور في التطبيق");
-};
-
-function renderAttendance() {
-  const playerSelect = document.getElementById("attendance-player");
-  const table = document.getElementById("attendance-table");
-
-  if (!playerSelect || !table) return;
-
-  const previous = playerSelect.value;
-
-  playerSelect.innerHTML =
-    '<option value="">اختر اللاعب</option>' +
-    db.players.map(player =>
-      `<option value="${esc(player.id)}">${esc(player.name)}</option>`
-    ).join("");
-
-  if (db.players.some(player => player.id === previous)) {
-    playerSelect.value = previous;
-  }
-
-  table.innerHTML = (db.attendance || [])
-    .slice()
-    .sort((a, b) => b.date.localeCompare(a.date))
-    .map(item => {
-      const player = db.players.find(p => p.id === item.playerId);
-      return `<tr>
-        <td>${esc(item.date)}</td>
-        <td>${esc(player ? player.name : "لاعب محذوف")}</td>
-        <td>${esc(item.status)}</td>
-        <td><button onclick="deleteAttendance('${esc(item.id)}')">حذف</button></td>
-      </tr>`;
-    }).join("");
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 3000);
 }
 
-window.deleteAttendance = function (recordId) {
-  if (!confirm("هل تريد حذف سجل الحضور؟")) return;
-  db.attendance = (db.attendance || []).filter(item => item.id !== recordId);
+function showLoginMessage(message) {
+  const element =
+    $("loginMessage") ||
+    $("loginError") ||
+    $("authMessage");
+
+  if (element) {
+    element.textContent = message;
+    element.style.display = "block";
+  } else {
+    showToast(message);
+  }
+}
+
+function getDataRef() {
+  if (!currentUser) {
+    throw new Error("يجب تسجيل الدخول أولاً.");
+  }
+
+  return doc(db, "judokas", currentUser.uid, "private", "appdata");
+}
+
+async function loadData() {
+  if (!currentUser) return;
+
+  try {
+    const snapshot = await getDoc(getDataRef());
+
+    if (snapshot.exists()) {
+      const remoteData = snapshot.data();
+
+      appData = {
+        ...appData,
+        ...remoteData,
+        settings: {
+          ...appData.settings,
+          ...(remoteData.settings || {})
+        }
+      };
+    }
+
+    renderAll();
+  } catch (error) {
+    console.error("خطأ تحميل البيانات:", error);
+    showToast("تعذر تحميل البيانات. تحقق من إعدادات قاعدة البيانات.");
+  }
+}
+
+async function saveData() {
+  if (!currentUser) {
+    showToast("سجّل الدخول أولاً لحفظ البيانات.");
+    return;
+  }
+
+  try {
+    await setDoc(getDataRef(), appData);
+    showToast("تم حفظ البيانات بنجاح.");
+  } catch (error) {
+    console.error("خطأ الحفظ:", error);
+    showToast("فشل الحفظ. تحقق من اتصال الإنترنت وقواعد Firestore.");
+  }
+}
+
+function scheduleSave() {
+  if (!currentUser) return;
+
+  clearTimeout(saveTimer);
+
+  saveTimer = setTimeout(async () => {
+    try {
+      await setDoc(getDataRef(), appData);
+    } catch (error) {
+      console.error("خطأ الحفظ التلقائي:", error);
+      showToast("لم يتم الحفظ التلقائي. تحقق من الاتصال.");
+    }
+  }, 800);
+}
+
+function renderAll() {
+  renderHome();
+
+  ["players", "sessions", "exercises", "tests", "notes"]
+    .forEach(renderTable);
+
   renderAttendance();
-  persist();
-};
+}
 
-document.getElementById("attendance-date").value =
-  new Date().toISOString().slice(0, 10);
-renderAttendance();
+function go(page) {
+  document.querySelectorAll(".page").forEach(element => {
+    element.classList.remove("active");
+  });
 
+  const target = $("page-" + page);
+
+  if (target) {
+    target.classList.add("active");
+  }
+
+  document.querySelectorAll("[data-page]").forEach(element => {
+    element.classList.toggle(
+      "active",
+      element.dataset.page === page
+    );
+  });
+
+  const titles = {
+    home: "الرئيسية",
+    players: "الرياضيون",
+    sessions: "الحصص التدريبية",
+    attendance: "الحضور والغياب",
+    exercises: "التمارين",
+    tests: "الاختبارات",
+    notes: "الملاحظات",
+    settings: "الإعدادات"
+  };
+
+  const pageTitle = $("pageTitle");
+
+  if (pageTitle) {
+    pageTitle.textContent = titles[page] || "تطبيق الجيدو";
+  }
+
+  if (page === "settings") {
+    renderSettings();
+  }
+
+  if (page === "attendance") {
+    renderAttendance();
+  }
+}
+
+function renderHome() {
+  const counts = {
+    players: appData.players.length,
+    sessions: appData.sessions.length,
+    exercises: appData.exercises.length,
+    tests: appData.tests.length
+  };
+
+  const mapping = {
+    totalPlayers: counts.players,
+    totalSessions: counts.sessions,
+    totalExercises: counts.exercises,
+    totalTests: counts.tests
+  };
+
+  Object.entries(mapping).forEach(([id, value]) => {
+    const element = $(id);
+    if (element) element.textContent = value;
+  });
+
+  const welcome = $("welcomeName");
+
+  if (welcome) {
+    welcome.textContent =
+      appData.settings.coachName || "حمداد هشام";
+  }
+}
+
+function renderTable(type) {
+  const config = tableConfig[type];
+  if (!config) return;
+
+  const container =
+    $(type + "Table") ||
+    $(type + "List") ||
+    $(type + "Container");
+
+  if (!container) return;
+
+  const records = appData[type] || [];
+
+  if (records.length === 0) {
+    container.innerHTML =
+      '<p class="empty-state">لا توجد بيانات بعد.</p>';
+    return;
+  }
+
+  const header = config.fields
+    .map(field => `<th>${escapeHTML(field.label)}</th>`)
+    .join("");
+
+  const rows = records.map((record, index) => {
+    const cells = config.fields.map(field => {
+      const value = record[field.key] ?? "";
+      return `<td>${escapeHTML(String(value))}</td>`;
+    }).join("");
+
+    return `
+      <tr>
+        ${cells}
+        <td>
+          <button type="button" onclick="editRecord('${type}', ${index})">
+            تعديل
+          </button>
+          <button type="button" onclick="deleteRecord('${type}', ${index})">
+            حذف
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join("");
+
+  container.innerHTML = `
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>${header}<th>الإجراءات</th></tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+function escapeHTML(value) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function renderAttendance() {
+  const container =
+    $("attendanceTable") ||
+    $("attendanceList") ||
+    $("attendanceContainer");
+
+  if (!container) return;
+
+  const records = appData.attendance || [];
+
+  if (records.length === 0) {
+    container.innerHTML =
+      '<p class="empty-state">لم تُسجّل بيانات الحضور بعد.</p>';
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>الرياضي</th>
+            <th>التاريخ</th>
+            <th>الحالة</th>
+            <th>ملاحظة</th>
+            <th>الإجراء</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${records.map((record, index) => `
+            <tr>
+              <td>${escapeHTML(String(record.playerName || ""))}</td>
+              <td>${escapeHTML(String(record.date || ""))}</td>
+              <td>${escapeHTML(String(record.status || ""))}</td>
+              <td>${escapeHTML(String(record.notes || ""))}</td>
+              <td>
+                <button type="button" onclick="deleteAttendance(${index})">
+                  حذف
+                </button>
+              </td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+ <script>
+/* أدوات إدارة البيانات */
+
+function addRecord(type) {
+  const config = tableConfig[type];
+  if (!config) return;
+
+  const record = {};
+
+  for (const field of config.fields) {
+    const value = prompt(
+      "أدخل " + field.label + ":"
+    );
+
+    if (value === null) return;
+
+    record[field.key] = value.trim();
+  }
+
+  record.id = Date.now().toString();
+
+  appData[type].push(record);
+  renderTable(type);
+  renderHome();
+  scheduleSave();
+  showToast("تمت إضافة البيانات.");
+}
+
+function editRecord(type, index) {
+  const config = tableConfig[type];
+  const record = appData[type]?.[index];
+
+  if (!config || !record) return;
+
+  const updated = { ...record };
+
+  for (const field of config.fields) {
+    const value = prompt(
+      "تعديل " + field.label + ":",
+      updated[field.key] ?? ""
+    );
+
+    if (value === null) return;
+
+    updated[field.key] = value.trim();
+  }
+
+  appData[type][index] = updated;
+
+  renderTable(type);
+  renderHome();
+  scheduleSave();
+  showToast("تم تعديل البيانات.");
+}
+
+function deleteRecord(type, index) {
+  if (!appData[type]?.[index]) return;
+
+  if (!confirm("هل تريد حذف هذا السجل نهائيًا؟")) {
+    return;
+  }
+
+  appData[type].splice(index, 1);
+
+  renderTable(type);
+  renderHome();
+  scheduleSave();
+  showToast("تم حذف السجل.");
+}
+
+/* الحضور والغياب */
+
+function addAttendance() {
+  const playerName = prompt("اسم الرياضي:");
+
+  if (playerName === null || !playerName.trim()) {
+    return;
+  }
+
+  const date = prompt(
+    "تاريخ الحصة:",
+    new Date().toISOString().slice(0, 10)
+  );
+
+  if (date === null) return;
+
+  const status = prompt(
+    "الحالة: حاضر أو غائب أو متأخر",
+    "حاضر"
+  );
+
+  if (status === null) return;
+
+  const notes = prompt("ملاحظة (اختياري):") || "";
+
+  appData.attendance.push({
+    id: Date.now().toString(),
+    playerName: playerName.trim(),
+    date,
+    status: status.trim(),
+    notes
+  });
+
+  renderAttendance();
+  scheduleSave();
+  showToast("تم تسجيل الحضور.");
+}
+
+function deleteAttendance(index) {
+  if (!appData.attendance[index]) return;
+
+  if (!confirm("هل تريد حذف سجل الحضور؟")) {
+    return;
+  }
+
+  appData.attendance.splice(index, 1);
+  renderAttendance();
+  scheduleSave();
+  showToast("تم حذف سجل الحضور.");
+}
+
+/* الإعدادات */
+
+function renderSettings() {
+  const coachName = $("coachName");
+  const clubName = $("clubName");
+
+  if (coachName) {
+    coachName.value = appData.settings.coachName || "";
+  }
+
+  if (clubName) {
+    clubName.value = appData.settings.clubName || "";
+  }
+}
+
+function saveSettings() {
+  const coachName = $("coachName");
+  const clubName = $("clubName");
+
+  appData.settings.coachName =
+    coachName?.value.trim() || "حمداد هشام";
+
+  appData.settings.clubName =
+    clubName?.value.trim() || "نادي الجيدو";
+
+  renderHome();
+  scheduleSave();
+  showToast("تم تحديث الإعدادات.");
+}
+
+/* تسجيل الدخول وإنشاء الحساب */
+
+async function login() {
+  const email =
+    $("email")?.value.trim() ||
+    $("loginEmail")?.value.trim();
+
+  const password =
+    $("password")?.value ||
+    $("loginPassword")?.value;
+
+  if (!email || !password) {
+    showLoginMessage("يرجى إدخال البريد الإلكتروني وكلمة المرور.");
+    return;
+  }
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    showToast("تم تسجيل الدخول.");
+  } catch (error) {
+    console.error("خطأ تسجيل الدخول:", error);
+
+    const messages = {
+      "auth/invalid-credential": "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
+      "auth/user-not-found": "الحساب غير موجود.",
+      "auth/wrong-password": "كلمة المرور غير صحيحة.",
+      "auth/invalid-email": "صيغة البريد الإلكتروني غير صحيحة.",
+      "auth/too-many-requests": "محاولات كثيرة. حاول لاحقًا.",
+      "auth/api-key-not-valid": "مفتاح Firebase غير صحيح أو غير صالح لهذا المشروع."
+    };
+
+    showLoginMessage(
+      messages[error.code] ||
+      ("تعذر تسجيل الدخول: " + (error.code || error.message))
+    );
+  }
+}
+
+async function register() {
+  const email =
+    $("email")?.value.trim() ||
+    $("loginEmail")?.value.trim();
+
+  const password =
+    $("password")?.value ||
+    $("loginPassword")?.value;
+
+  if (!email || !password) {
+    showLoginMessage("أدخل البريد الإلكتروني وكلمة المرور لإنشاء الحساب.");
+    return;
+  }
+
+  if (password.length < 6) {
+    showLoginMessage("يجب أن تتكون كلمة المرور من 6 أحرف على الأقل.");
+    return;
+  }
+
+  try {
+    await createUserWithEmailAndPassword(auth, email, password);
+    showToast("تم إنشاء الحساب.");
+  } catch (error) {
+    console.error("خطأ إنشاء الحساب:", error);
+
+    const messages = {
+      "auth/email-already-in-use": "هذا البريد الإلكتروني مسجل بالفعل.",
+      "auth/invalid-email": "صيغة البريد الإلكتروني غير صحيحة.",
+      "auth/weak-password": "كلمة المرور ضعيفة."
+    };
+
+    showLoginMessage(
+      messages[error.code] ||
+      ("تعذر إنشاء الحساب: " + (error.code || error.message))
+    );
+  }
+}
+
+async function logout() {
+  try {
+    await signOut(auth);
+    showToast("تم تسجيل الخروج.");
+  } catch (error) {
+    console.error(error);
+    showToast("تعذر تسجيل الخروج.");
+  }
+}
+
+/* النسخ الاحتياطي والاستعادة */
+
+function exportBackup() {
+  const blob = new Blob(
+    [JSON.stringify(appData, null, 2)],
+    { type: "application/json;charset=utf-8" }
+  );
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = "judo-backup-" +
+    new Date().toISOString().slice(0, 10) +
+    ".json";
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  URL.revokeObjectURL(url);
+  showToast("تم تجهيز النسخة الاحتياطية.");
+}
+
+function importBackup(event) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = async () => {
+    try {
+      const imported = JSON.parse(reader.result);
+
+      if (
+        !imported ||
+        typeof imported !== "object" ||
+        Array.isArray(imported)
+      ) {
+        throw new Error("صيغة الملف غير صحيحة.");
+      }
+
+      if (!confirm("ستُستبدل البيانات الحالية بمحتوى النسخة الاحتياطية. هل تتابع؟")) {
+        event.target.value = "";
+        return;
+      }
+
+      appData = {
+        players: Array.isArray(imported.players) ? imported.players : [],
+        sessions: Array.isArray(imported.sessions) ? imported.sessions : [],
+        attendance: Array.isArray(imported.attendance) ? imported.attendance : [],
+        exercises: Array.isArray(imported.exercises) ? imported.exercises : [],
+        tests: Array.isArray(imported.tests) ? imported.tests : [],
+        notes: Array.isArray(imported.notes) ? imported.notes : [],
+        settings: {
+          coachName: imported.settings?.coachName || "حمداد هشام",
+          clubName: imported.settings?.clubName || "نادي الجيدو"
+        }
+      };
+
+      renderAll();
+      renderSettings();
+      await saveData();
+      showToast("تم استيراد النسخة الاحتياطية.");
+    } catch (error) {
+      console.error(error);
+      showToast("تعذر استيراد الملف. تأكد أنه نسخة احتياطية صحيحة.");
+    } finally {
+      event.target.value = "";
+    }
+  };
+
+  reader.readAsText(file);
+}
+
+/* ربط الأزرار */
+
+document.addEventListener("click", event => {
+  const button = event.target.closest("[data-page]");
+
+  if (button) {
+    go(button.dataset.page);
+  }
+});
+
+function connectButton(id, callback) {
+  const element = $(id);
+
+  if (element) {
+    element.addEventListener("click", callback);
+  }
+}
+
+connectButton("loginBtn", login);
+connectButton("loginButton", login);
+connectButton("registerBtn", register);
+connectButton("registerButton", register);
+connectButton("logoutBtn", logout);
+connectButton("logoutButton", logout);
+
+connectButton("addPlayerBtn", () => addRecord("players"));
+connectButton("addSessionBtn", () => addRecord("sessions"));
+connectButton("addExerciseBtn", () => addRecord("exercises"));
+connectButton("addTestBtn", () => addRecord("tests"));
+connectButton("addNoteBtn", () => addRecord("notes"));
+connectButton("addAttendanceBtn", addAttendance);
+
+connectButton("saveSettingsBtn", saveSettings);
+connectButton("saveDataBtn", saveData);
+connectButton("exportBtn", exportBackup);
+
+const importInput =
+  $("importFile") ||
+  $("backupFile");
+
+if (importInput) {
+  importInput.addEventListener("change", importBackup);
+}
+
+/* مراقبة حالة الحساب */
+
+onAuthStateChanged(auth, async user => {
+  currentUser = user;
+
+  const loginScreen =
+    $("loginScreen") ||
+    $("loginPage");
+
+  const appScreen =
+    $("appScreen") ||
+    $("mainApp");
+
+  if (user) {
+    if (loginScreen) loginScreen.style.display = "none";
+    if (appScreen) appScreen.style.display = "block";
+
+    await loadData();
+    renderSettings();
+  } else {
+    if (loginScreen) loginScreen.style.display = "block";
+    if (appScreen) appScreen.style.display = "none";
+  }
+});
+
+/* إتاحة الوظائف لأزرار HTML */
+
+Object.assign(window, {
+  go,
+  login,
+  register,
+  logout,
+  addRecord,
+  editRecord,
+  deleteRecord,
+  addAttendance,
+  deleteAttendance,
+  saveSettings,
+  saveData,
+  exportBackup,
+  importBackup
+});
 </script>
 </body>
 </html>
