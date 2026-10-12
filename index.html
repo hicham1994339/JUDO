@@ -2,52 +2,34 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>المدرب حمداد هشام للجيدو</title>
 <style>
-:root{--navy:#102b50;--blue:#1769e8;--gold:#ffc629;--bg:#f1f5fb;--white:#fff;--text:#20334e}
+:root{--navy:#102b50;--blue:#1769e8;--gold:#ffc629;--bg:#f1f5fb;--text:#20334e}
 *{box-sizing:border-box}
 body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text)}
 button,input,select,textarea{font:inherit}
-button{cursor:pointer;border:0;border-radius:10px;padding:11px 15px;font-weight:bold}
-button:active{transform:scale(.98)}
-header{background:linear-gradient(120deg,#071b35,#174c88);color:white;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.brand{display:flex;align-items:center;gap:12px}
-.logo{width:52px;height:52px;border-radius:50%;border:2px solid var(--gold);display:grid;place-items:center;font-size:27px}
-.brand h1{font-size:21px;margin:0 0 6px}
-.brand p{margin:0;color:#d4e5ff;font-size:12px}
-.status{font-size:12px;color:#a9f5ca}
-.layout{display:grid;grid-template-columns:225px minmax(0,1fr);min-height:calc(100vh - 92px)}
-aside{background:#102b50;color:white;padding:18px 12px}
+button{cursor:pointer;border:0;border-radius:9px;padding:11px 14px;font-weight:bold}
+input,select,textarea{width:100%;padding:11px;border:1px solid #d3deed;border-radius:9px;background:white}
+header{background:linear-gradient(120deg,#071b35,#174c88);color:white;padding:18px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+header h1{font-size:20px;margin:0 0 6px}
+header p{margin:0;color:#d4e5ff;font-size:12px}
+.layout{display:grid;grid-template-columns:220px 1fr;min-height:80vh}
+aside{background:var(--navy);padding:12px}
 .nav{display:flex;flex-direction:column;gap:7px}
-.nav button{background:transparent;color:#e0eaff;text-align:right;padding:14px;border-radius:9px}
-.nav button.active,.nav button:hover{background:#1769e8;color:white}
-.aside-note{margin-top:35px;text-align:center;line-height:2;color:#b8cce8;font-size:13px}
-main{padding:22px;min-width:0}
-.hero{border-radius:18px;background:linear-gradient(110deg,#071a2c,#174b7d);color:white;padding:25px;display:flex;justify-content:space-between;align-items:center;gap:18px;overflow:hidden;margin-bottom:20px}
-.hero h2{font-size:clamp(22px,3vw,34px);margin:0 0 12px}
-.hero p{line-height:1.8;color:#e0ecff;margin:0}
-.judo-icon{font-size:76px;border:3px solid var(--gold);border-radius:50%;width:112px;height:112px;display:grid;place-items:center;flex-shrink:0}
-.gold{color:var(--gold)}
-.actions,.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:20px}
-.quick{color:white;min-height:100px;text-align:right;padding:16px;background:linear-gradient(135deg,#087cdb,#1769e8)}
-.quick:nth-child(2){background:linear-gradient(135deg,#079c62,#13b779)}
-.quick:nth-child(3){background:linear-gradient(135deg,#e67e00,#ffad24)}
-.quick:nth-child(4){background:linear-gradient(135deg,#6134cf,#8655ed)}
-.quick:nth-child(5){background:linear-gradient(135deg,#078b9f,#19b5c9)}
-.quick strong{display:block;font-size:17px;margin-bottom:9px}
-.quick span{font-size:12px}
-.stats{grid-template-columns:repeat(4,minmax(0,1fr))}
-.stat,.panel{background:white;border:1px solid #e0e8f4;border-radius:14px;padding:18px}
-.stat{border-bottom:4px solid var(--blue)}
+.nav button{background:transparent;color:white;text-align:right}
+.nav button.active,.nav button:hover{background:var(--blue)}
+main{padding:20px;min-width:0}
+.hero{background:linear-gradient(110deg,#071a2c,#174b7d);color:white;border-radius:16px;padding:22px;margin-bottom:16px}
+.hero h2{margin-top:0}.gold{color:var(--gold)}
+.actions,.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:16px}
+.quick{background:var(--blue);color:white;text-align:right;min-height:80px}
+.quick strong,.quick span{display:block;margin-bottom:7px}
+.stat,.panel{background:white;border:1px solid #e0e8f4;border-radius:12px;padding:16px;margin-bottom:16px}
 .stat span{font-size:13px;color:#64748b}
-.stat strong{display:block;font-size:30px;color:var(--blue);margin-top:9px}
-.panel{margin-bottom:18px;min-width:0}
-.panel h3{margin:0 0 16px;font-size:18px}
-.toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:15px}
-.toolbar input{max-width:280px}
-input,select,textarea{width:100%;padding:12px;border:1px solid #d3deed;border-radius:9px;background:white;color:var(--text);outline:none}
-input:focus,select:focus,textarea:focus{border-color:var(--blue)}
+.stat strong{display:block;font-size:28px;color:var(--blue);margin-top:8px}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.toolbar h3{margin:0}
 .formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .field{display:flex;flex-direction:column;gap:7px}
 .field label{font-size:13px;font-weight:bold}
@@ -55,34 +37,58 @@ input:focus,select:focus,textarea:focus{border-color:var(--blue)}
 .primary{background:var(--blue);color:white}
 .secondary{background:#e8f0fc;color:#164b91}
 .danger{background:#fee2e2;color:#b91c1c}
-.success{background:#dcfce7;color:#166534}
-.small{padding:7px 9px;font-size:12px;margin:2px}
 .tablewrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;white-space:nowrap}
-th,td{padding:12px 10px;border-bottom:1px solid #e9eef6;text-align:right;font-size:13px}
-th{background:#f1f5fb;color:#24436a}
-tr:hover td{background:#fafcff}
-.empty{text-align:center;padding:30px;color:#718096}
-.tag{display:inline-block;padding:5px 9px;background:#e0edff;color:#1654a0;border-radius:20px;font-size:11px}
-.notice{background:#fff8dd;border:1px solid #f5dfa0;border-radius:10px;padding:13px;font-size:13px;line-height:1.8;margin-bottom:18px}
-footer{text-align:center;padding:20px;color:#728198;font-size:12px}
+th,td{padding:10px;border-bottom:1px solid #e9eef6;text-align:right;font-size:13px}
+th{background:#f1f5fb}
+.small{padding:6px 8px;font-size:12px;margin:2px}
+.empty{text-align:center;padding:24px;color:#718096}
 .hidden{display:none!important}
-#toast{position:fixed;bottom:20px;left:20px;background:#102b50;color:white;padding:13px 18px;border-radius:10px;display:none;z-index:10;box-shadow:0 5px 25px #0003}
-@media(max-width:1000px){.actions{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:700px){.layout{grid-template-columns:1fr}aside{padding:8px;position:static}.nav{display:grid;grid-template-columns:repeat(3,1fr)}.nav button{text-align:center;padding:10px 5px;font-size:12px}.aside-note{display:none}main{padding:12px}.hero{padding:18px}.judo-icon{width:75px;height:75px;font-size:44px}.actions{grid-template-columns:repeat(2,minmax(0,1fr))}.brand h1{font-size:17px}.formgrid{grid-template-columns:1fr}.full{grid-column:auto}}
-@media(max-width:390px){.stats{grid-template-columns:1fr 1fr}.actions{grid-template-columns:1fr 1fr}.quick{padding:12px}.quick strong{font-size:14px}}
+.notice{background:#fff8dd;border:1px solid #f5dfa0;padding:12px;border-radius:9px;line-height:1.8;font-size:13px;margin-bottom:14px}
+#login{max-width:440px;margin:35px auto;padding:24px;background:white;border-radius:16px;box-shadow:0 8px 30px #0001}
+#login h2{text-align:center;color:var(--navy)}
+#login .field{margin-bottom:13px}
+#loginMessage{white-space:pre-wrap;color:#b91c1c;font-size:13px}
+#toast{position:fixed;bottom:15px;left:15px;background:#102b50;color:white;padding:12px;border-radius:9px;display:none;z-index:30}
+footer{text-align:center;padding:18px;color:#728198;font-size:12px}
+@media(max-width:700px){
+ .layout{grid-template-columns:1fr}
+ .nav{display:grid;grid-template-columns:repeat(2,1fr)}
+ main{padding:10px}
+ .formgrid{grid-template-columns:1fr}
+ .full{grid-column:auto}
+}
 </style>
 </head>
 <body>
-<header>
-  <div class="brand">
-    <div class="logo">🥋</div>
-    <div>
-      <h1>تطبيق المدرب حمداد هشام للجيدو</h1>
-      <p>منظومة إدارة التدريب واللاعبين</p>
-    </div>
+
+<section id="login">
+  <h2>🥋 تسجيل الدخول</h2>
+  <p>تطبيق المدرب حمداد هشام للجيدو</p>
+  <div class="field">
+    <label for="email">البريد الإلكتروني</label>
+    <input id="email" type="email" autocomplete="username" required placeholder="example@email.com">
   </div>
-  <div class="status">● النظام جاهز للعمل</div>
+  <div class="field">
+    <label for="password">كلمة المرور</label>
+    <input id="password" type="password" autocomplete="current-password" required placeholder="أدخل كلمة المرور">
+  </div>
+  <button class="primary" style="width:100%" onclick="loginUser()">دخول</button>
+  <button class="secondary" style="width:100%;margin-top:8px" onclick="registerUser()">إنشاء حساب جديد</button>
+  <button class="secondary" style="width:100%;margin-top:8px" onclick="resetPassword()">نسيت كلمة المرور؟</button>
+  <p id="loginMessage"></p>
+</section>
+
+<div id="app" class="hidden">
+<header>
+  <div>
+    <h1>🥋 تطبيق المدرب حمداد هشام للجيدو</h1>
+    <p>منظومة إدارة التدريب واللاعبين</p>
+  </div>
+  <div>
+    <span id="userEmail"></span>
+    <button class="secondary" onclick="logoutUser()">تسجيل الخروج</button>
+  </div>
 </header>
 
 <div class="layout">
@@ -90,45 +96,34 @@ footer{text-align:center;padding:20px;color:#728198;font-size:12px}
   <nav class="nav" id="nav">
     <button class="active" data-page="home">🏠 الرئيسية</button>
     <button data-page="players">👥 اللاعبون</button>
-    <button data-page="sessions">📅 الحصص التدريبية</button>
+    <button data-page="sessions">📅 الحصص</button>
     <button data-page="exercises">🏋️ التمارين</button>
     <button data-page="tests">🏆 الاختبارات</button>
     <button data-page="notes">📝 الملاحظات</button>
-    <button data-page="settings">⚙️ الإعدادات والنسخ</button>
+    <button data-page="settings">⚙️ النسخ الاحتياطي</button>
   </nav>
-  <div class="aside-note">الجيدو ليس مجرد رياضة<br>بل أخلاق وانضباط وحياة</div>
 </aside>
 
 <main>
 <section id="home" class="page">
   <div class="hero">
-    <div>
-      <h2>مرحبًا بك في عالم <span class="gold">الجيدو</span></h2>
-      <p>تدرّب بإصرار، ارتقِ بمستواك، واصنع أبطال المستقبل.<br>كل لاعب خطوة جديدة نحو النجاح.</p>
-    </div>
-    <div class="judo-icon">🥋</div>
+    <h2>مرحبًا بك في عالم <span class="gold">الجيدو</span></h2>
+    <p>تدرّب بإصرار، ارتقِ بمستواك، واصنع أبطال المستقبل.</p>
   </div>
-
   <div class="actions">
     <button class="quick" onclick="openForm('players')"><strong>＋ إضافة لاعب</strong><span>تسجيل لاعب جديد</span></button>
-    <button class="quick" onclick="openForm('sessions')"><strong>▦ تسجيل حصة</strong><span>إضافة حصة تدريبية</span></button>
-    <button class="quick" onclick="openForm('exercises')"><strong>✦ إضافة تمرين</strong><span>تنظيم التمارين</span></button>
-    <button class="quick" onclick="openForm('tests')"><strong>✓ إضافة اختبار</strong><span>تقييم مستوى اللاعبين</span></button>
-    <button class="quick" onclick="go('players')"><strong>▥ قائمة اللاعبين</strong><span>متابعة التطور</span></button>
+    <button class="quick" onclick="openForm('sessions')"><strong>＋ تسجيل حصة</strong><span>إضافة حصة تدريبية</span></button>
+    <button class="quick" onclick="openForm('exercises')"><strong>＋ إضافة تمرين</strong><span>تنظيم التمارين</span></button>
+    <button class="quick" onclick="openForm('tests')"><strong>＋ إضافة اختبار</strong><span>تقييم اللاعبين</span></button>
+    <button class="quick" onclick="go('players')"><strong>قائمة اللاعبين</strong><span>متابعة التطور</span></button>
   </div>
-
   <div class="stats">
     <div class="stat"><span>إجمالي اللاعبين</span><strong id="count-players">0</strong></div>
     <div class="stat"><span>الحصص المسجلة</span><strong id="count-sessions">0</strong></div>
     <div class="stat"><span>التمارين</span><strong id="count-exercises">0</strong></div>
     <div class="stat"><span>الاختبارات</span><strong id="count-tests">0</strong></div>
   </div>
-
-  <div class="panel">
-    <h3>📅 آخر الحصص التدريبية</h3>
-    <div id="recent-sessions"></div>
-  </div>
-  <div class="notice">💾 تُحفظ بياناتك تلقائيًا في هذا المتصفح. استخدم قسم الإعدادات لتصدير نسخة احتياطية منتظمة من بياناتك.</div>
+  <div class="panel"><h3>📅 آخر الحصص التدريبية</h3><div id="recent-sessions"></div></div>
 </section>
 
 <section id="players" class="page hidden">
@@ -169,18 +164,12 @@ footer{text-align:center;padding:20px;color:#728198;font-size:12px}
 
 <section id="settings" class="page hidden">
   <div class="panel">
-    <h3>⚙️ إعدادات التطبيق والنسخ الاحتياطي</h3>
-    <p>يمكنك تنزيل نسخة من جميع بياناتك واستعادتها لاحقًا على هذا التطبيق.</p>
-    <div class="toolbar">
-      <button class="primary" onclick="exportData()">⬇️ تصدير نسخة احتياطية</button>
-      <button class="secondary" onclick="document.getElementById('import-file').click()">⬆️ استعادة نسخة احتياطية</button>
-      <input class="hidden" type="file" id="import-file" accept=".json,application/json" onchange="importData(event)">
-    </div>
-    <hr style="border:0;border-top:1px solid #e5eaf2;margin:22px 0">
-    <h3>🗑️ إدارة البيانات</h3>
-    <p>احذر: حذف جميع البيانات لا يمكن التراجع عنه إلا بوجود نسخة احتياطية.</p>
-    <button class="danger" onclick="clearAll()">حذف جميع البيانات</button>
-    <div class="notice" style="margin-top:20px">مهم: هذا الإصدار يحفظ البيانات محليًا في المتصفح. لا يزامنها تلقائيًا بين أجهزة مختلفة، وقد تفقدها إذا مسحت بيانات المتصفح. للاستخدام الدائم والمتعدد المستخدمين، يلزم ربطه بقاعدة بيانات سحابية مع تسجيل دخول وصلاحيات مناسبة.</div>
+    <h3>⚙️ النسخ الاحتياطي</h3>
+    <p>يمكنك تنزيل نسخة من بياناتك أو استعادتها.</p>
+    <button class="primary" onclick="exportData()">⬇️ تصدير نسخة احتياطية</button>
+    <button class="secondary" onclick="document.getElementById('import-file').click()">⬆️ استعادة نسخة احتياطية</button>
+    <input class="hidden" type="file" id="import-file" accept=".json,application/json" onchange="importData(event)">
+    <div class="notice" style="margin-top:15px">البيانات في هذا الإصدار تحفظ في قاعدة Firestore المرتبطة بحسابك. احتفظ بنسخة احتياطية دورية.</div>
   </div>
 </section>
 
@@ -194,158 +183,247 @@ footer{text-align:center;padding:20px;color:#728198;font-size:12px}
     </div>
   </form>
 </section>
-<footer>© تطبيق المدرب حمداد هشام للجيدو — جميع الحقوق محفوظة</footer>
+<footer>© تطبيق المدرب حمداد هشام للجيدو</footer>
 </main>
+</div>
 </div>
 <div id="toast"></div>
 
-<script>
-const DBKEY = 'hicham_judo_app_v1';
-const blankDB = () => ({players:[],sessions:[],exercises:[],tests:[],notes:[]});
-let db = loadDB();
-let currentType = '';
-let editingId = null;
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+import {
+  getAuth, onAuthStateChanged, signInWithEmailAndPassword,
+  createUserWithEmailAndPassword, sendPasswordResetEmail, signOut
+} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+import {
+  getFirestore, doc, getDoc, setDoc
+} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
 
-const configs = {
- players:{
-  title:'اللاعبون',
-  fields:[
-   ['name','اسم اللاعب','text',true],
-   ['age','العمر','number',false],
-   ['category','الفئة','select',false,['أشبال','أصاغر','أواسط','أكابر','أخرى']],
-   ['weight','الوزن (كغ)','number',false],
-   ['level','المستوى','select',false,['مبتدئ','متوسط','متقدم','حزام أصفر','حزام برتقالي','حزام أخضر','حزام أزرق','حزام بني','حزام أسود']],
-   ['phone','رقم الهاتف','tel',false],
-   ['joinDate','تاريخ الانضمام','date',false],
-   ['details','ملاحظات','textarea',false]
-  ]
- },
- sessions:{
-  title:'الحصص التدريبية',
-  fields:[
-   ['name','عنوان الحصة','text',true],
-   ['date','التاريخ','date',true],
-   ['duration','المدة بالدقائق','number',false],
-   ['place','مكان التدريب','text',false],
-   ['details','ملاحظات الحصة','textarea',false]
-  ]
- },
- exercises:{
-  title:'التمارين',
-  fields:[
-   ['name','اسم التمرين','text',true],
-   ['kind','نوع التمرين','select',false,['لياقة بدنية','تقنيات الجودو','إحماء','قوة وتحمل','مرونة','مباراة تدريبية','أخرى']],
-   ['duration','المدة بالدقائق','number',false],
-   ['details','شرح التمرين','textarea',false]
-  ]
- },
- tests:{
-  title:'الاختبارات',
-  fields:[
-   ['player','اسم اللاعب','select',true,[]],
-   ['name','اسم الاختبار','text',true],
-   ['result','النتيجة','text',false],
-   ['date','تاريخ الاختبار','date',true],
-   ['details','ملاحظات','textarea',false]
-  ]
- },
- notes:{
-  title:'الملاحظات',
-  fields:[
-   ['name','عنوان الملاحظة','text',true],
-   ['details','محتوى الملاحظة','textarea',true]
-  ]
- }
+/* إعدادات مشروع Firebase الخاص بك */
+const firebaseConfig = {
+  apiKey: "AIzaSyBXh02ck4c3YYHVT5IATQAwOqclk2WV7R0",
+  authDomain: "judo-hicham.firebaseapp.com",
+  projectId: "judo-hicham",
+  storageBucket: "judo-hicham.firebasestorage.app",
+  messagingSenderId: "166216481832",
+  appId: "1:166216481832:web:ac85aa6be889ef22a9c91d",
+  measurementId: "G-DLJ24B16Z4"
 };
 
-function loadDB(){
- try{
-  const raw=localStorage.getItem(DBKEY);
-  return raw ? {...blankDB(),...JSON.parse(raw)} : blankDB();
- }catch(e){return blankDB();}
+const firebaseApp = initializeApp(firebaseConfig);
+const auth = getAuth(firebaseApp);
+const firestore = getFirestore(firebaseApp);
+
+const blankDB = () => ({
+  players:[], sessions:[], exercises:[], tests:[], notes:[]
+});
+let db = blankDB();
+let currentType = "";
+let editingId = null;
+let currentUser = null;
+let saveChain = Promise.resolve();
+
+const configs = {
+ players:{title:"اللاعبون",fields:[
+  ["name","اسم اللاعب","text",true],
+  ["age","العمر","number",false],
+  ["category","الفئة","select",false,["أشبال","أصاغر","أواسط","أكابر","أخرى"]],
+  ["weight","الوزن (كغ)","number",false],
+  ["level","المستوى","select",false,["مبتدئ","متوسط","متقدم","حزام أصفر","حزام برتقالي","حزام أخضر","حزام أزرق","حزام بني","حزام أسود"]],
+  ["phone","رقم الهاتف","tel",false],
+  ["joinDate","تاريخ الانضمام","date",false],
+  ["details","ملاحظات","textarea",false]
+ ]},
+ sessions:{title:"الحصص التدريبية",fields:[
+  ["name","عنوان الحصة","text",true],
+  ["date","التاريخ","date",true],
+  ["duration","المدة بالدقائق","number",false],
+  ["place","مكان التدريب","text",false],
+  ["details","ملاحظات الحصة","textarea",false]
+ ]},
+ exercises:{title:"التمارين",fields:[
+  ["name","اسم التمرين","text",true],
+  ["kind","نوع التمرين","select",false,["لياقة بدنية","تقنيات الجودو","إحماء","قوة وتحمل","مرونة","مباراة تدريبية","أخرى"]],
+  ["duration","المدة بالدقائق","number",false],
+  ["details","شرح التمرين","textarea",false]
+ ]},
+ tests:{title:"الاختبارات",fields:[
+  ["player","اسم اللاعب","select",true,[]],
+  ["name","اسم الاختبار","text",true],
+  ["result","النتيجة","text",false],
+  ["date","تاريخ الاختبار","date",true],
+  ["details","ملاحظات","textarea",false]
+ ]},
+ notes:{title:"الملاحظات",fields:[
+  ["name","عنوان الملاحظة","text",true],
+  ["details","محتوى الملاحظة","textarea",true]
+ ]}
+};
+
+function toast(message){
+ const el=document.getElementById("toast");
+ el.textContent=message;el.style.display="block";
+ clearTimeout(window.toastTimer);
+ window.toastTimer=setTimeout(()=>el.style.display="none",3000);
 }
-function persist(){
- try{
-  localStorage.setItem(DBKEY,JSON.stringify(db));
-  updateStats();
-  return true;
- }catch(e){
-  toast('تعذر الحفظ. قد تكون مساحة التخزين ممتلئة.');
-  return false;
+function showLoginMessage(message){
+ document.getElementById("loginMessage").textContent=message;
+}
+function setBusy(busy){
+ document.querySelectorAll("#login button").forEach(b=>b.disabled=busy);
+}
+window.loginUser=async function(){
+ const email=document.getElementById("email").value.trim();
+ const password=document.getElementById("password").value;
+ if(!email||!password){showLoginMessage("أدخل البريد الإلكتروني وكلمة المرور.");return;}
+ setBusy(true);showLoginMessage("");
+ try{await signInWithEmailAndPassword(auth,email,password);}
+ catch(e){showLoginMessage("تعذر الدخول. تحقق من البريد وكلمة المرور، وتأكد من تفعيل Email/Password في Firebase.");}
+ finally{setBusy(false);}
+};
+window.registerUser=async function(){
+ const email=document.getElementById("email").value.trim();
+ const password=document.getElementById("password").value;
+ if(!email||!password){showLoginMessage("أدخل البريد الإلكتروني وكلمة المرور أولًا.");return;}
+ if(password.length<6){showLoginMessage("كلمة المرور يجب أن تتكون من 6 أحرف أو أكثر.");return;}
+ if(!confirm("إنشاء حساب جديد بهذا البريد الإلكتروني؟"))return;
+ setBusy(true);showLoginMessage("");
+ try{await createUserWithEmailAndPassword(auth,email,password);}
+ catch(e){showLoginMessage(e.code==="auth/email-already-in-use"?"هذا البريد مسجل من قبل. استخدم زر الدخول.":"تعذر إنشاء الحساب. تحقق من إعدادات Firebase والبريد الإلكتروني.");}
+ finally{setBusy(false);}
+};
+window.resetPassword=async function(){
+ const email=document.getElementById("email").value.trim();
+ if(!email){showLoginMessage("اكتب بريدك الإلكتروني أولًا ثم اضغط نسيت كلمة المرور.");return;}
+ try{await sendPasswordResetEmail(auth,email);showLoginMessage("أرسلنا رابط إعادة تعيين كلمة المرور إن كان البريد مسجلًا.");}
+ catch(e){showLoginMessage("تعذر إرسال الرابط. تحقق من البريد وإعدادات Firebase.");}
+};
+window.logoutUser=async function(){
+ try{await signOut(auth);}catch(e){toast("تعذر تسجيل الخروج.");}
+};
+
+async function loadCloudData(user){
+ const ref=doc(firestore,"judokas",user.uid,"private","appdata");
+ const snap=await getDoc(ref);
+ if(snap.exists()){
+  const data=snap.data().data||{};
+  db={...blankDB(),...data};
+  for(const k of Object.keys(blankDB()))if(!Array.isArray(db[k]))db[k]=[];
+ }else{
+  // ترحيل البيانات المحلية لهذا الجهاز فقط عند أول دخول
+  let local=null;
+  try{local=JSON.parse(localStorage.getItem("hicham_judo_app_v1")||"null");}catch(e){}
+  if(local&&["players","sessions","exercises","tests","notes"].every(k=>Array.isArray(local[k]))){
+   db={...blankDB(),...local};
+  }else{
+   db=blankDB();
+  }
+  await setDoc(ref,{data:db,updatedAt:new Date().toISOString()});
  }
+ renderAll();
 }
+
+async function saveCloudData(){
+ if(!currentUser)throw new Error("not-authenticated");
+ const ref=doc(firestore,"judokas",currentUser.uid,"private","appdata");
+ await setDoc(ref,{data:db,updatedAt:new Date().toISOString()});
+}
+
+onAuthStateChanged(auth,async user=>{
+ currentUser=user;
+ if(!user){
+  document.getElementById("login").classList.remove("hidden");
+  document.getElementById("app").classList.add("hidden");
+  return;
+ }
+ document.getElementById("login").classList.add("hidden");
+ document.getElementById("app").classList.remove("hidden");
+ document.getElementById("userEmail").textContent=user.email||"";
+ try{
+  await loadCloudData(user);
+  toast("تم الاتصال بقاعدة البيانات السحابية");
+ }catch(e){
+  console.error(e);
+  toast("تعذر تحميل البيانات. تحقق من قواعد Firestore.");
+ }
+});
+
 function id(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8);}
 function esc(value){
- return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
-function toast(message){
- const el=document.getElementById('toast');
- el.textContent=message;el.style.display='block';
- clearTimeout(window.toastTimer);
- window.toastTimer=setTimeout(()=>el.style.display='none',2800);
+function persist(){
+ // نرتب عمليات الحفظ كي لا تتداخل عمليات الحفظ المتتابعة
+ const snapshot=JSON.parse(JSON.stringify(db));
+ saveChain=saveChain.then(async()=>{
+  if(!currentUser)throw new Error("لم يتم تسجيل الدخول");
+  const ref=doc(firestore,"judokas",currentUser.uid,"private","appdata");
+  await setDoc(ref,{data:snapshot,updatedAt:new Date().toISOString()});
+ });
+ saveChain=saveChain.catch(e=>{
+  console.error(e);
+  toast("فشل الحفظ السحابي. تحقق من اتصال الإنترنت وقواعد Firestore.");
+ });
+ return true;
+}
+function renderAll(){
+ renderHome();
+ ["players","sessions","exercises","tests","notes"].forEach(renderTable);
 }
 function go(page){
- document.querySelectorAll('.page').forEach(el=>el.classList.add('hidden'));
- document.getElementById('form-panel').classList.add('hidden');
- document.getElementById(page).classList.remove('hidden');
- document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
- if(page!=='home')renderTable(page);
- if(page==='home')renderHome();
- window.scrollTo({top:0,behavior:'smooth'});
+ document.querySelectorAll(".page").forEach(el=>el.classList.add("hidden"));
+ document.getElementById("form-panel").classList.add("hidden");
+ document.getElementById(page).classList.remove("hidden");
+ document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
+ if(page!=="home")renderTable(page);
+ if(page==="home")renderHome();
+ window.scrollTo({top:0,behavior:"smooth"});
 }
-document.getElementById('nav').addEventListener('click',e=>{
- const b=e.target.closest('button[data-page]');
+document.getElementById("nav").addEventListener("click",e=>{
+ const b=e.target.closest("button[data-page]");
  if(b)go(b.dataset.page);
 });
-function openForm(type,recordId=null){
+window.go=go;
+
+window.openForm=function(type,recordId=null){
  currentType=type;editingId=recordId;
- const config=configs[type];
- if(!config)return;
- document.getElementById('form-title').textContent=(recordId?'تعديل ':'إضافة ')+config.title;
+ const config=configs[type];if(!config)return;
+ document.getElementById("form-title").textContent=(recordId?"تعديل ":"إضافة ")+config.title;
  const record=recordId?db[type].find(x=>x.id===recordId):{};
- const holder=document.getElementById('form-fields');
- holder.innerHTML='';
+ const holder=document.getElementById("form-fields");holder.innerHTML="";
  config.fields.forEach(field=>{
   const [key,label,kind,required,options]=field;
-  const wrap=document.createElement('div');
-  wrap.className='field'+(kind==='textarea'?' full':'');
-  const lab=document.createElement('label');
-  lab.textContent=label;
-  lab.htmlFor='f-'+key;
-  wrap.appendChild(lab);
+  const wrap=document.createElement("div");
+  wrap.className="field"+(kind==="textarea"?" full":"");
+  const lab=document.createElement("label");lab.textContent=label;lab.htmlFor="f-"+key;wrap.appendChild(lab);
   let input;
-  if(kind==='textarea'){
-   input=document.createElement('textarea');input.rows=3;
-  }else if(kind==='select'){
-   input=document.createElement('select');
+  if(kind==="textarea"){input=document.createElement("textarea");input.rows=3;}
+  else if(kind==="select"){
+   input=document.createElement("select");
    let opts=options||[];
-   if(key==='player')opts=db.players.map(p=>p.name);
-   input.innerHTML='<option value="">-- اختر --</option>'+opts.map(o=>'<option value="'+esc(o)+'">'+esc(o)+'</option>').join('');
-  }else{
-   input=document.createElement('input');input.type=kind;
-  }
-  input.id='f-'+key;input.name=key;
-  input.required=!!required;
-  input.value=record?.[key]??(key==='date'||key==='joinDate'?new Date().toISOString().slice(0,10):'');
-  if(key==='age'||key==='weight'||key==='duration')input.min='0';
+   if(key==="player")opts=db.players.map(p=>p.name);
+   input.innerHTML='<option value="">-- اختر --</option>'+opts.map(o=>'<option value="'+esc(o)+'">'+esc(o)+'</option>').join("");
+  }else{input=document.createElement("input");input.type=kind;}
+  input.id="f-"+key;input.name=key;input.required=!!required;
+  input.value=record?.[key]??((key==="date"||key==="joinDate")?new Date().toISOString().slice(0,10):"");
+  if(["age","weight","duration"].includes(key))input.min="0";
   wrap.appendChild(input);holder.appendChild(wrap);
  });
- document.querySelectorAll('.page').forEach(el=>el.classList.add('hidden'));
- document.getElementById('form-panel').classList.remove('hidden');
- window.scrollTo({top:0,behavior:'smooth'});
-}
-function closeForm(){
- document.getElementById('form-panel').classList.add('hidden');
- const page=document.querySelector('#nav button.active')?.dataset.page||'home';
+ document.querySelectorAll(".page").forEach(el=>el.classList.add("hidden"));
+ document.getElementById("form-panel").classList.remove("hidden");
+ window.scrollTo({top:0,behavior:"smooth"});
+};
+window.closeForm=function(){
+ document.getElementById("form-panel").classList.add("hidden");
+ const page=document.querySelector("#nav button.active")?.dataset.page||"home";
  go(page);
-}
-function saveRecord(event){
+};
+window.saveRecord=async function(event){
  event.preventDefault();
- const form=new FormData(event.target);
- const record={};
- configs[currentType].fields.forEach(f=>record[f[0]]=String(form.get(f[0])??'').trim());
- if(currentType==='tests'&&!db.players.some(p=>p.name===record.player)){
-  toast('أضف اللاعب أولًا قبل تسجيل الاختبار.');return;
+ const form=new FormData(event.target),record={};
+ configs[currentType].fields.forEach(f=>record[f[0]]=String(form.get(f[0])??"").trim());
+ if(currentType==="tests"&&!db.players.some(p=>p.name===record.player)){
+  toast("أضف اللاعب أولًا قبل تسجيل الاختبار.");return;
  }
  if(editingId){
   const index=db[currentType].findIndex(x=>x.id===editingId);
@@ -353,88 +431,75 @@ function saveRecord(event){
  }else{
   db[currentType].push({id:id(),createdAt:new Date().toISOString(),...record});
  }
- if(!persist())return;
  const type=currentType;
- closeForm();
- renderTable(type);renderHome();
- toast('تم حفظ البيانات بنجاح ✓');
-}
-function removeRecord(type,recordId){
- if(!confirm('هل تريد حذف هذا السجل؟'))return;
+ renderAll();closeForm();
+ persist();
+ toast("تم إرسال البيانات للحفظ. تحقق من الاتصال إذا ظهر خطأ.");
+};
+window.removeRecord=function(type,recordId){
+ if(!confirm("هل تريد حذف هذا السجل؟"))return;
  db[type]=db[type].filter(x=>x.id!==recordId);
- persist();renderTable(type);renderHome();toast('تم حذف السجل');
-}
+ renderAll();persist();toast("تم تسجيل طلب الحذف.");
+};
+
 function renderTable(type){
- const target=document.getElementById('table-'+type);
- if(!target)return;
+ const target=document.getElementById("table-"+type);if(!target)return;
  let rows=db[type]||[];
- if(type==='players'){
-  const q=(document.getElementById('search-players')?.value||'').trim().toLowerCase();
-  rows=rows.filter(x=>(x.name+' '+x.category+' '+x.level).toLowerCase().includes(q));
+ if(type==="players"){
+  const q=(document.getElementById("search-players")?.value||"").trim().toLowerCase();
+  rows=rows.filter(x=>(x.name+" "+x.category+" "+x.level).toLowerCase().includes(q));
  }
- if(!rows.length){
-  target.innerHTML='<tr><td colspan="8" class="empty">لا توجد بيانات مسجلة حتى الآن.</td></tr>';return;
- }
+ if(!rows.length){target.innerHTML='<tr><td colspan="8" class="empty">لا توجد بيانات مسجلة حتى الآن.</td></tr>';return;}
  const cols={
-  players:[['name','الاسم'],['age','العمر'],['category','الفئة'],['weight','الوزن'],['level','المستوى'],['phone','الهاتف']],
-  sessions:[['name','العنوان'],['date','التاريخ'],['duration','المدة'],['place','المكان'],['details','الملاحظات']],
-  exercises:[['name','التمرين'],['kind','النوع'],['duration','المدة'],['details','الوصف']],
-  tests:[['player','اللاعب'],['name','الاختبار'],['result','النتيجة'],['date','التاريخ'],['details','الملاحظات']],
-  notes:[['name','العنوان'],['details','المحتوى'],['createdAt','التاريخ']]
+  players:[["name","الاسم"],["age","العمر"],["category","الفئة"],["weight","الوزن"],["level","المستوى"],["phone","الهاتف"]],
+  sessions:[["name","العنوان"],["date","التاريخ"],["duration","المدة"],["place","المكان"],["details","الملاحظات"]],
+  exercises:[["name","التمرين"],["kind","النوع"],["duration","المدة"],["details","الوصف"]],
+  tests:[["player","اللاعب"],["name","الاختبار"],["result","النتيجة"],["date","التاريخ"],["details","الملاحظات"]],
+  notes:[["name","العنوان"],["details","المحتوى"],["createdAt","التاريخ"]]
  }[type];
  target.innerHTML=rows.map(row=>{
   const cells=cols.map(([key])=>{
-   let val=row[key]||'—';
-   if(key==='createdAt'&&val!=='—')val=val.slice(0,10);
-   return '<td>'+esc(val)+'</td>';
-  }).join('');
-  return '<tr>'+cells+'<td><button class="secondary small" onclick="openForm(\''+type+'\',\''+row.id+'\')">✎ تعديل</button><button class="danger small" onclick="removeRecord(\''+type+'\',\''+row.id+'\')">حذف</button></td></tr>';
- }).join('');
+   let val=row[key]||"—";
+   if(key==="createdAt"&&val!=="—")val=val.slice(0,10);
+   return "<td>"+esc(val)+"</td>";
+  }).join("");
+  return "<tr>"+cells+'<td><button class="secondary small" onclick="openForm(\''+type+'\',\''+row.id+'\')">✎ تعديل</button><button class="danger small" onclick="removeRecord(\''+type+'\',\''+row.id+'\')">حذف</button></td></tr>';
+ }).join("");
 }
 function updateStats(){
- ['players','sessions','exercises','tests'].forEach(type=>{
-  const el=document.getElementById('count-'+type);
+ ["players","sessions","exercises","tests"].forEach(type=>{
+  const el=document.getElementById("count-"+type);
   if(el)el.textContent=db[type].length;
  });
 }
 function renderHome(){
  updateStats();
- const el=document.getElementById('recent-sessions');
- const rows=[...db.sessions].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).slice(0,5);
- el.innerHTML=rows.length?'<div class="tablewrap"><table><thead><tr><th>الحصة</th><th>التاريخ</th><th>المدة</th></tr></thead><tbody>'+rows.map(r=>'<tr><td>'+esc(r.name)+'</td><td>'+esc(r.date||'—')+'</td><td>'+esc(r.duration||'—')+'</td></tr>').join('')+'</tbody></table></div>':'<div class="empty">لم تسجل أي حصة بعد. ابدأ بإضافة أول حصة تدريبية.</div>';
+ const el=document.getElementById("recent-sessions");
+ const rows=[...db.sessions].sort((a,b)=>(b.date||"").localeCompare(a.date||"")).slice(0,5);
+ el.innerHTML=rows.length?'<div class="tablewrap"><table><thead><tr><th>الحصة</th><th>التاريخ</th><th>المدة</th></tr></thead><tbody>'+rows.map(r=>"<tr><td>"+esc(r.name)+"</td><td>"+esc(r.date||"—")+"</td><td>"+esc(r.duration||"—")+"</td></tr>").join("")+"</tbody></table></div>":'<div class="empty">لم تسجل أي حصة بعد. ابدأ بإضافة أول حصة تدريبية.</div>';
 }
-function exportData(){
- const blob=new Blob([JSON.stringify({version:1,exportedAt:new Date().toISOString(),data:db},null,2)],{type:'application/json'});
- const url=URL.createObjectURL(blob);
- const a=document.createElement('a');
- a.href=url;a.download='judo-backup-'+new Date().toISOString().slice(0,10)+'.json';
- a.click();URL.revokeObjectURL(url);toast('تم تجهيز النسخة الاحتياطية');
-}
-function importData(event){
+window.exportData=function(){
+ const blob=new Blob([JSON.stringify({version:1,exportedAt:new Date().toISOString(),data:db},null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download="judo-backup-"+new Date().toISOString().slice(0,10)+".json";
+ a.click();URL.revokeObjectURL(url);toast("تم تجهيز النسخة الاحتياطية");
+};
+window.importData=function(event){
  const file=event.target.files[0];if(!file)return;
  const reader=new FileReader();
- reader.onload=()=>{
+ reader.onload=async()=>{
   try{
-   const parsed=JSON.parse(reader.result);
-   const incoming=parsed.data||parsed;
-   const types=['players','sessions','exercises','tests','notes'];
-   if(!types.every(t=>Array.isArray(incoming[t])))throw new Error('invalid');
-   if(!confirm('سيتم استبدال البيانات الحالية بالنسخة المستوردة. هل تريد المتابعة؟'))return;
-   db=incoming;
-   if(persist()){renderHome();toast('تمت استعادة النسخة الاحتياطية بنجاح');}
-  }catch(e){toast('الملف غير صالح أو لا يحتوي على نسخة متوافقة');}
-  event.target.value='';
+   const parsed=JSON.parse(reader.result),incoming=parsed.data||parsed;
+   const types=["players","sessions","exercises","tests","notes"];
+   if(!types.every(t=>Array.isArray(incoming[t])))throw new Error("invalid");
+   if(!confirm("سيتم استبدال بيانات حسابك الحالية بالنسخة المستوردة. هل تريد المتابعة؟"))return;
+   db={...blankDB(),...incoming};renderAll();
+   await saveCloudData();toast("تمت استعادة البيانات إلى السحابة.");
+  }catch(e){console.error(e);toast("تعذر الاستيراد أو الحفظ. تحقق من الملف والاتصال.");}
+  event.target.value="";
  };
  reader.readAsText(file);
-}
-function clearAll(){
- if(!confirm('هل أنت متأكد من حذف كل اللاعبين والحصص والتمارين والاختبارات والملاحظات؟'))return;
- if(!confirm('تأكيد أخير: سيتم حذف جميع البيانات المحلية.'))return;
- db=blankDB();persist();renderHome();
- document.querySelectorAll('.page:not(#home)').forEach(el=>el.classList.add('hidden'));
- go('home');toast('تم حذف جميع البيانات');
-}
-renderHome();
+};
 </script>
 </body>
 </html>
