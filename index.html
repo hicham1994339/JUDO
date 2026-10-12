@@ -97,6 +97,7 @@ footer{text-align:center;padding:18px;color:#728198;font-size:12px}
     <button class="active" data-page="home">🏠 الرئيسية</button>
     <button data-page="players">👥 اللاعبون</button>
     <button data-page="sessions">📅 الحصص</button>
+   <button data-page="attendance">📋 الحضور والغياب</button>
     <button data-page="exercises">🏋️ التمارين</button>
     <button data-page="tests">🏆 الاختبارات</button>
     <button data-page="notes">📝 الملاحظات</button>
@@ -138,6 +139,44 @@ footer{text-align:center;padding:18px;color:#728198;font-size:12px}
   <div class="panel">
     <div class="toolbar"><h3>📅 الحصص التدريبية</h3><button class="primary" onclick="openForm('sessions')">＋ تسجيل حصة</button></div>
     <div class="tablewrap"><table><thead><tr><th>عنوان الحصة</th><th>التاريخ</th><th>المدة</th><th>المكان</th><th>ملاحظات</th><th>الإجراءات</th></tr></thead><tbody id="table-sessions"></tbody></table></div>
+  </div>
+</section>
+
+<section id="attendance" class="page hidden">
+  <div class="panel">
+    <div class="toolbar">
+      <h3>📋 تسجيل الحضور والغياب</h3>
+    </div>
+    <div class="grid">
+      <div>
+        <label>تاريخ الحصة</label>
+        <input type="date" id="attendance-date">
+      </div>
+      <div>
+        <label>اللاعب</label>
+        <select id="attendance-player"></select>
+      </div>
+      <div>
+        <label>الحالة</label>
+        <select id="attendance-status">
+          <option value="حاضر">حاضر</option>
+          <option value="غائب">غائب</option>
+          <option value="متأخر">متأخر</option>
+          <option value="غياب مبرر">غياب مبرر</option>
+        </select>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="primary" onclick="saveAttendance()">حفظ الحضور</button>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>التاريخ</th><th>اللاعب</th><th>الحالة</th><th>الإجراء</th></tr>
+        </thead>
+        <tbody id="attendance-table"></tbody>
+      </table>
+    </div>
   </div>
 </section>
 
@@ -377,8 +416,10 @@ function persist(){
 }
 function renderAll(){
  renderHome();
- ["players","sessions","exercises","tests","notes"].forEach(renderTable);
-}
+
+["players","sessions","exercises","tests","notes"].forEach(renderTable);
+renderAttendance();
+
 function go(page){
  document.querySelectorAll(".page").forEach(el=>el.classList.add("hidden"));
  document.getElementById("form-panel").classList.add("hidden");
@@ -509,6 +550,84 @@ window.importData=function(event){
  };
  reader.readAsText(file);
 };
+ 
+window.saveAttendance = async function () {
+  const date = document.getElementById("attendance-date").value;
+  const playerId = document.getElementById("attendance-player").value;
+  const status = document.getElementById("attendance-status").value;
+
+  if (!date || !playerId) {
+    alert("يرجى اختيار التاريخ واللاعب");
+    return;
+  }
+
+  if (!Array.isArray(db.attendance)) db.attendance = [];
+
+  const existing = db.attendance.findIndex(
+    item => item.date === date && item.playerId === playerId
+  );
+
+  const record = {
+    id: existing >= 0 ? db.attendance[existing].id : id(),
+    date,
+    playerId,
+    status
+  };
+
+  if (existing >= 0) {
+    db.attendance[existing] = record;
+  } else {
+    db.attendance.push(record);
+  }
+
+  renderAttendance();
+  persist();
+  alert("تم تسجيل الحضور في التطبيق");
+};
+
+function renderAttendance() {
+  const playerSelect = document.getElementById("attendance-player");
+  const table = document.getElementById("attendance-table");
+
+  if (!playerSelect || !table) return;
+
+  const previous = playerSelect.value;
+
+  playerSelect.innerHTML =
+    '<option value="">اختر اللاعب</option>' +
+    db.players.map(player =>
+      `<option value="${esc(player.id)}">${esc(player.name)}</option>`
+    ).join("");
+
+  if (db.players.some(player => player.id === previous)) {
+    playerSelect.value = previous;
+  }
+
+  table.innerHTML = (db.attendance || [])
+    .slice()
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .map(item => {
+      const player = db.players.find(p => p.id === item.playerId);
+      return `<tr>
+        <td>${esc(item.date)}</td>
+        <td>${esc(player ? player.name : "لاعب محذوف")}</td>
+        <td>${esc(item.status)}</td>
+        <td><button onclick="deleteAttendance('${esc(item.id)}')">حذف</button></td>
+      </tr>`;
+    }).join("");
+}
+
+window.deleteAttendance = function (recordId) {
+  if (!confirm("هل تريد حذف سجل الحضور؟")) return;
+  db.attendance = (db.attendance || []).filter(item => item.id !== recordId);
+  renderAttendance();
+  persist();
+};
+
+document.getElementById("attendance-date").value =
+  new Date().toISOString().slice(0, 10);
+renderAttendance();
+
 </script>
 </body>
 </html>
