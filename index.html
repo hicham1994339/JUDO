@@ -214,9 +214,18 @@ const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 const firestore = getFirestore(firebaseApp);
 
+
 const blankDB = () => ({
-  players:[], sessions:[], exercises:[], tests:[], notes:[]
+  players: [],
+  sessions: [],
+  exercises: [],
+  tests: [],
+  notes: [],
+  attendance: [],
+  payments: [],
+  belts: []
 });
+
 let db = blankDB();
 let currentType = "";
 let editingId = null;
